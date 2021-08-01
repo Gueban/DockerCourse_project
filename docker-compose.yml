@@ -1,0 +1,37 @@
+version: "3.3"
+services: 
+#    web:
+#        build: ./frontend/.
+#        ports: 
+#            - 80:80
+#        volumes:
+#            - gueban-volume:/var/www/html
+#        links:
+#            - backend
+#    backend: 
+#        build: ./backend/.
+#        ports:
+#            - 2800:2800
+#        volumes:
+#            - gueban-volume:/my-app
+#        links:
+#            - sql
+#            - cache
+    sql:
+        image: "mysql:8.0.26"
+        environment:
+            - MYSQL_ROOT_PASSWORD=gueban
+        ports:
+            - 2801:3306
+        volumes:
+            - "sql-vol:/etc/mysql/conf.d"
+        networks:
+            - gueban-network
+#    cache:
+#        build: ./backend/database/.
+volumes:
+    sql-vol:
+
+networks:
+    gueban-network:
+        driver: bridge
