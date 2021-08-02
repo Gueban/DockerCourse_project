@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, request
+from flask import Flask, json, jsonify, request
 from flask_mysqldb import MySQL
 from flask_cors import CORS
+import redis
 import hashlib
+import uuid
 
 '''import sys
 sys.path.append('/run/secrets/gueban-secret')
@@ -12,6 +14,7 @@ import secret
 server = Flask(__name__)
 CORS(server)
 
+# --------- Mysql conf ---------
 server.config['MYSQL_HOST'] = secret.keys['Mysql']['HOST']
 server.config['MYSQL_PORT'] = secret.keys['Mysql']['PORT']
 server.config['MYSQL_USER'] = secret.keys['Mysql']['USER']
@@ -19,6 +22,9 @@ server.config['MYSQL_PASSWORD'] = secret.keys['Mysql']['PASSWORD']
 server.config['MYSQL_DB'] = secret.keys['Mysql']['DB']
 
 mysql = MySQL(server)
+
+# ---------- Redis conf --------
+cache = redis.Redis(host=secret.keys['Redis']['HOST'], port=secret.keys['Redis']['PORT'], db=0)
 
 #----------------HEALTH CHECK------------
 @server.route('/', methods=["GET"])
@@ -44,6 +50,21 @@ def countSql():
     data = curs.fetchall()
     curs.close()
     return jsonify({'response':data[0][0]})
+
+@server.route('/cache', methods=['POST'])
+def addCache():
+    uid = uuid.uuid4()
+    email = request.json['email']
+    name = request.json['name']
+    password = hashlib.md5(request.json['password'].encode()).hexdigest()
+    pipe = cache.pipeline()
+    data = pipe.set(str(uid), f"[{email}, {name}, {password}]").incr('count').execute()
+    return jsonify({'response': data})
+
+@server.route('/countCache', methods=['GET'])
+def countCache():
+    data = cache.get('count')
+    return jsonify({'response': data})
 
 if __name__ == '__main__':
     server.run(debug=True, host='0.0.0.0', port=2800)
