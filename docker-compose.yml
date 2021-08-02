@@ -27,11 +27,19 @@ services:
             - "sql-vol:/etc/mysql/conf.d"
         networks:
             - gueban-network
-#    cache:
-#        build: ./backend/database/.
+    cache:
+        image: "redis:alpine"
+#        environment:
+#            -
+#        ports:
+#            - 
+        volumes:
+            - "cache-vol:/data"
+        networks:
+            - gueban-network
 volumes:
     sql-vol:
-
+    cache-vol:
 networks:
     gueban-network:
         driver: bridge
