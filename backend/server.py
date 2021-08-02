@@ -34,8 +34,16 @@ def addSql():
     curs = mysql.connection.cursor()
     curs.execute("INSERT INTO Person (name, email, password) VALUES (%s, %s, %s);", (name, email, password))
     mysql.connection.commit()
-    curs.close
+    curs.close()
     return jsonify({'message': 'User successfully created.'})
+
+@server.route('/countSql', methods=['GET'])
+def countSql():
+    curs = mysql.connection.cursor()
+    curs.execute("SELECT count(*) FROM Person;")
+    data = curs.fetchall()
+    curs.close()
+    return jsonify({'response':data[0][0]})
 
 if __name__ == '__main__':
     server.run(debug=True, host='0.0.0.0', port=2800)
