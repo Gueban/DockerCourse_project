@@ -64,7 +64,7 @@ def addCache():
 @server.route('/countCache', methods=['GET'])
 def countCache():
     data = cache.get('count')
-    return jsonify({'response': data})
+    return jsonify({'response': data.decode("utf-8")})
 
 if __name__ == '__main__':
     server.run(debug=True, host='0.0.0.0', port=2800)
