@@ -1,6 +1,0 @@
-/database
-/__pycache__
-.gitignore
-.Dockerignore
-Dockerfile
-secret.py

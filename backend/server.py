@@ -4,27 +4,27 @@ from flask_cors import CORS
 import redis
 import hashlib
 import uuid
+import os
 
-'''import sys
-sys.path.append('/run/secrets/gueban-secret')
-import secret'''
-
-import secret
+fuser = open(os.environ.get('MYSQLUSER'), "r")
+fpass = open(os.environ.get('MYSQLPASSWORD'), "r")
+userr= fuser.read()
+passw=fpass.read()
 
 server = Flask(__name__)
 CORS(server)
 
 # --------- Mysql conf ---------
-server.config['MYSQL_HOST'] = secret.keys['Mysql']['HOST']
-server.config['MYSQL_PORT'] = secret.keys['Mysql']['PORT']
-server.config['MYSQL_USER'] = secret.keys['Mysql']['USER']
-server.config['MYSQL_PASSWORD'] = secret.keys['Mysql']['PASSWORD']
-server.config['MYSQL_DB'] = secret.keys['Mysql']['DB']
+server.config['MYSQL_HOST'] = os.environ.get('MYSQLHOST')
+server.config['MYSQL_PORT'] = int(os.environ.get('MYSQLPORT'))
+server.config['MYSQL_USER'] = str(userr)
+server.config['MYSQL_PASSWORD'] = str(passw)
+server.config['MYSQL_DB'] = os.environ.get('MYSQLDB')
 
 mysql = MySQL(server)
 
 # ---------- Redis conf --------
-cache = redis.Redis(host=secret.keys['Redis']['HOST'], port=secret.keys['Redis']['PORT'], db=0)
+cache = redis.Redis(host=os.environ.get('REDISHOST'), port=int(os.environ.get('REDISPORT')), db=0)
 
 #----------------HEALTH CHECK------------
 @server.route('/', methods=["GET"])

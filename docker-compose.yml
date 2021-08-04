@@ -4,42 +4,59 @@ services:
 #        build: ./frontend/.
 #        ports: 
 #            - 80:80
-#        volumes:
-#            - gueban-volume:/var/www/html
 #        links:
 #            - backend
-#    backend: 
-#        build: ./backend/.
-#        ports:
-#            - 2800:2800
-#        volumes:
-#            - gueban-volume:/my-app
-#        links:
-#            - sql
-#            - cache
+#        networks:
+#            - gueban-network
     sql:
-        image: "mysql:8.0.26"
+        image: "mysql:latest"
         environment:
             - MYSQL_ROOT_PASSWORD=gueban
         ports:
             - 2801:3306
         volumes:
-            - "sql-vol:/etc/mysql/conf.d"
+            - "sql-vol:/var/lib/mysql"
         networks:
             - gueban-network
     cache:
         image: "redis:alpine"
-#        environment:
-#            -
-#        ports:
-#            - 5200:6379
+        ports:
+            - 5200:6379
         volumes:
             - "cache-vol:/data"
         networks:
             - gueban-network
+    backend: 
+        image: miguesteban/aguita-python:latest
+        ports:
+            - 2800:2800
+        secrets:
+            - secret-u
+            - secret-p
+        environment:
+            - MYSQLUSER=/run/secrets/secret-u
+            - MYSQLPASSWORD=/run/secrets/secret-p
+            - MYSQLHOST=54.188.79.21
+            - MYSQLPORT=2801
+            - MYSQLDB=project
+            - REDISHOST=54.188.79.21
+            - REDISPORT=5200
+        links:
+#            - web
+            - sql
+            - cache
+        networks:
+            - gueban-network
+secrets:
+    secret-u:
+        file: ./backend/secret-u.txt
+    secret-p:
+        file: ./backend/secret-p.txt
 volumes:
     sql-vol:
     cache-vol:
+#    front-vol:
+#    back-vol:
 networks:
     gueban-network:
         driver: bridge

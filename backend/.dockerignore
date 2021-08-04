@@ -1,0 +1,8 @@
+Dockerfile
+secret.py
+/database
+/__pycache__
+.gitignore
+.dockerignore
+secret-u.txt
+secret-p.txt
