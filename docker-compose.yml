@@ -1,13 +1,5 @@
 version: "3.3"
 services: 
-#    web:
-#        build: ./frontend/.
-#        ports: 
-#            - 80:80
-#        links:
-#            - backend
-#        networks:
-#            - gueban-network
     sql:
         image: "mysql:latest"
         environment:
@@ -42,9 +34,19 @@ services:
             - REDISHOST=54.188.79.21
             - REDISPORT=5200
         links:
-#            - web
+            - web
             - sql
             - cache
+        networks:
+            - gueban-network
+    web:
+        image: miguesteban/front
+        ports: 
+            - 80:80
+        environment:
+            - FRONTHOST=54.188.79.21
+        links:
+            - backend
         networks:
             - gueban-network
 secrets:

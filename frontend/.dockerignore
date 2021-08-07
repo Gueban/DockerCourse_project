@@ -3,3 +3,4 @@ Dockerfile
 .Dockerignore
 README.md
 .gitignore
+id_ed25519
