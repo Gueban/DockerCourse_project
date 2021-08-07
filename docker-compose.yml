@@ -34,7 +34,6 @@ services:
             - REDISHOST=54.188.79.21
             - REDISPORT=5200
         links:
-            - web
             - sql
             - cache
         networks:
@@ -57,8 +56,6 @@ secrets:
 volumes:
     sql-vol:
     cache-vol:
-#    front-vol:
-#    back-vol:
 networks:
     gueban-network:
         driver: bridge
