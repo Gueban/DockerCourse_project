@@ -15,15 +15,15 @@
 
 3. Open docker-compose.yml 
 
-4. Search `54.188.79.21` and replace for your public ip.
+4. Search `YOUR_PUBLIC_IP` and replace for your public ip.
 
 5. Create a file called `secret-u.txt` and write `root` to the file.
 
 6. Create a file called `secret-p.txt` and write your password to login to mysql
 
-7. create a container by running `sudo docker run --rm -it mysql sh`
+7. Run `docker-compose up -d`
 
-8. Inside the container run
+8. Inside the mysql container container run
 `mysql -u root -p`
 
 9. enter `gueban` as password
@@ -42,6 +42,6 @@
   PRIMARY KEY (id))
 ENGINE = InnoDB;`
 
-14. Exit the container and run `docker-compose up -d`
+14. Exit the container and run `docker-compose down` and `docker-compose up -d`
 
 15. if you cant access to the databases try running `curl http://localhost:2800`

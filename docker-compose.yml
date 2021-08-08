@@ -28,10 +28,10 @@ services:
         environment:
             - MYSQLUSER=/run/secrets/secret-u
             - MYSQLPASSWORD=/run/secrets/secret-p
-            - MYSQLHOST=54.185.44.55
+            - MYSQLHOST=YOUR_PUBLIC_IP
             - MYSQLPORT=2801
             - MYSQLDB=project
-            - REDISHOST=54.185.44.55
+            - REDISHOST=YOUR_PUBLIC_IP
             - REDISPORT=5200
         network_mode: host
     web:
