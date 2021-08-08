@@ -9,7 +9,7 @@
 
 ## Deploy instructions
 
-1. Clone this repo on your machine with `git clone https://github.com/Gueban/DockerCourse_project.git`
+1. Clone this repository on your machine
 
 2. Enter to DockerCourse_project directory
 

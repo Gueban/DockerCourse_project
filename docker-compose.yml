@@ -28,16 +28,12 @@ services:
         environment:
             - MYSQLUSER=/run/secrets/secret-u
             - MYSQLPASSWORD=/run/secrets/secret-p
-            - MYSQLHOST=54.188.79.21
+            - MYSQLHOST=54.185.44.55
             - MYSQLPORT=2801
             - MYSQLDB=project
-            - REDISHOST=54.188.79.21
+            - REDISHOST=54.185.44.55
             - REDISPORT=5200
-        links:
-            - sql
-            - cache
-        networks:
-            - gueban-network
+        network_mode: host
     web:
         image: miguesteban/front
         network_mode: host
