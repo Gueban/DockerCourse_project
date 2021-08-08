@@ -20,8 +20,6 @@ services:
             - gueban-network
     backend: 
         image: miguesteban/aguita-python:latest
-        ports:
-            - 2800:2800
         secrets:
             - secret-u
             - secret-p
