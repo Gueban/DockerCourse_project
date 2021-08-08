@@ -40,14 +40,7 @@ services:
             - gueban-network
     web:
         image: miguesteban/front
-        ports: 
-            - 80:80
-        environment:
-            - FRONTHOST=54.188.79.21
-        links:
-            - backend
-        networks:
-            - gueban-network
+        network_mode: host
 secrets:
     secret-u:
         file: ./backend/secret-u.txt
